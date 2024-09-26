@@ -10,7 +10,7 @@ module Airtable
     def initialize(results)
       # Parse records
       @records = results && results["records"] ?
-        results["records"].map { |r| Record.new(r["fields"].merge("id" => r["id"])) } : []
+        results["records"].map { |r| Record.new(r["fields"].merge("_id" => r["id"])) } : []
       # Store offset
       @offset = results["offset"] if results
       # Assign delegation object
