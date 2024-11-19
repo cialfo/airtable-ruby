@@ -3,6 +3,7 @@ module Airtable
   class Record
     def initialize(attrs={})
       override_attributes!(attrs)
+      set_fields(attrs)
     end
 
     def id; @attrs["id"]; end
@@ -34,9 +35,13 @@ module Airtable
       @attrs.map { |k, v| define_accessor(k) }
     end
 
+    def set_fields(attrs={})
+      @fields = attrs
+    end
+
     # Hash with keys based on airtable original column names
     def fields
-      HashWithIndifferentAccess.new(Hash[@column_keys.map { |k| [ k, @attrs[to_key(k)] ] }])
+      HashWithIndifferentAccess.new(Hash[@column_keys.map { |k| [ k, @fields[k] ] }])
     end
 
     # Airtable will complain if we pass an 'id' as part of the request body.
